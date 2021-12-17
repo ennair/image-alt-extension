@@ -1,3 +1,34 @@
+const baseURL = 'https://us-central1-altwrite-1dae9.cloudfunctions.net/webApi/rest/';
+const getURL = baseURL + 'getAlt/';
+const postURL = baseURL + 'saveAlt/';
+
+async function getAltText(filename) {
+	const urlString = `${getURL}${filename}`;
+
+	let response = await fetch(urlString, {
+		method: 'GET',
+		mode: 'cors',
+	});
+
+	let responseJson = await response.json();
+	return responseJson;
+}
+
+async function postAltText(filename, altText) {
+	const urlString = `${postURL}${filename}`;
+
+	let response = await fetch(urlString, {
+		method: 'POST',
+		mode: 'cors',
+		body: JSON.stringify({
+			imgAlt: altText,
+		}),
+	});
+
+	let responseJson = await response.json();
+	return responseJson;
+}
+
 const initButtons = () => {
 	const images = document.getElementsByTagName('img');
 	console.log(images);
@@ -14,7 +45,7 @@ const initButtons = () => {
 	for (const image of images) {
 		const button = altWriteButton.cloneNode(true);
 		const altText = image.getAttribute('alt');
-		const imageUrl = image.getAttribute('url');
+		const imageUrl = image.getAttribute('src');
 
 		image.parentNode.classList.add('altwrite--relative');
 		image.after(button);
@@ -53,6 +84,7 @@ const initModal = (button, altText, imageUrl) => {
 	inputForm.addEventListener('submit', (event) => {
 		event.preventDefault();
 		alert(`form submitted: ${imageUrl} -> ${input.value}`);
+		editAltText(imageUrl, input.value);
 	});
 
 	document.body.appendChild(modalContainer);
@@ -66,8 +98,6 @@ const handleModalAction = (button, altText, imageUrl) => {
 	button.addEventListener('click', (event) => {
 		event.preventDefault();
 		initModal(button, altText, imageUrl);
-
-		editAltText(button, altText);
 	});
 };
 
@@ -99,3 +129,16 @@ const editAltText = (button, altText) => {
 	const image = button.previousSibling;
 	console.log(image);
 };
+
+const reviseAltText = async () => {
+	console.log(' a');
+	if (window.location.href === 'https://www.nu.nl/binnenland/6173682/om-vervolgt-twee-agenten-voor-geweld-tijdens-coronademonstratie-malieveld.html') {
+		console.log(' a');
+		let targetImg = document.querySelector('img[src="https://media.nu.nl/m/3mfxa4xadouj_xwd640.jpg/om-vervolgt-twee-agenten-voor-geweld-tijdens-coronademonstratie-malieveld.jpg"]');
+		newAlt = (await getAltText('om-vervolgt-twee-agenten-voor-geweld-tijdens-coronademonstratie-malieveld.jpg')).imgNewAlt;
+		console.log(newAlt);
+		targetImg.setAttribute('alt', newAlt);
+		console.log(' a');
+	}
+}
+reviseAltText();

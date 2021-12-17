@@ -5,10 +5,13 @@ body {
 .altwrite__button {
 	background: black;
 	color: #fff;
+	border: 0;
 	position: relative;
 	z-index: 9999;
 }
 
-img {
-	position: relative;
+.altwrite__button svg {
+	fill: #fff;
+	width: 10px;
+	height: 10px;
 }

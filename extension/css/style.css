@@ -27,6 +27,7 @@ body {
   height: 200px;
   background: white;
   position: absolute;
+	z-index: 9999;
 	padding: 40px;
 }
 

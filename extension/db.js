@@ -11,7 +11,6 @@ async function getAltText(filename) {
 	});
 
 	let responseJson = await response.json();
-	console.log(responseJson);
 	return responseJson;
 }
 
@@ -27,6 +26,5 @@ async function postAltText(filename, altText) {
 	});
 
 	let responseJson = await response.json();
-	console.log(responseJson);
 	return responseJson;
 }

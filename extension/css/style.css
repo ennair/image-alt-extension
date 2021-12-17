@@ -2,11 +2,17 @@ body {
 	background: pink;
 }
 
+.altwrite--relative {
+	position: relative;
+}
+
 .altwrite__button {
 	background: black;
 	color: #fff;
 	border: 0;
-	position: relative;
+	position: absolute;
+	top: 0;
+	left: 0;
 	z-index: 9999;
 }
 
@@ -14,4 +20,16 @@ body {
 	fill: #fff;
 	width: 10px;
 	height: 10px;
+}
+
+.altwrite__modal-container {
+  width: 500px;
+  height: 200px;
+  background: white;
+  position: absolute;
+	padding: 40px;
+}
+
+.altwrite__modal-title {
+	font-size: 20px;
 }

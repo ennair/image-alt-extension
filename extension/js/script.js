@@ -13,18 +13,49 @@ const initButtons = () => {
 
 	for (const image of images) {
 		const button = altWriteButton.cloneNode(true);
+		const altText = image.getAttribute('alt');
+
+		image.parentNode.classList.add('altwrite--relative');
 		image.after(button);
-		button.addEventListener('click', handleAltWriteButtonClick);
+		handleModalAction(button, altText);
 	}
 };
 
-const handleAltWriteButtonClick = (event) => {
-	event.preventDefault();
-	openPopup();
+const initModal = (button, altText) => {
+	const modalContainer = document.createElement('div');
+	const modalText = document.createElement('h1');
+	const inputForm = document.createElement('form');
+	const input = document.createElement('input');
+	const sendButton = document.createElement('button');
+	const offsets = button.getBoundingClientRect();
+	const top = offsets.top;
+	const left = offsets.left;
+
+	modalText.classList.add('altwrite__modal-title');
+	modalText.innerHTML = 'Verbeter de alt-text van deze afbeelding';
+
+	modalContainer.appendChild(modalText);
+	modalContainer.classList.add('altwrite__modal-container');
+	modalContainer.style.top = `${top}px`;
+	modalContainer.style.left = `${left + 20}px`;
+	modalContainer.appendChild(inputForm);
+
+	input.value = altText;
+	sendButton.innerHTML = 'verstuur';
+
+	inputForm.appendChild(input);
+	inputForm.appendChild(sendButton);
+
+	document.body.appendChild(modalContainer);
 };
 
-const openPopup = () => {
-	alert('popup');
+const handleModalAction = (button, altText) => {
+	button.addEventListener('click', (event) => {
+		event.preventDefault();
+		initModal(button, altText);
+
+		editAltText(button, altText);
+	});
 };
 
 const imgs = document.querySelectorAll('img');
@@ -50,3 +81,8 @@ const sortImages = () => {
 initButtons();
 getImages();
 sortImages();
+
+const editAltText = (button, altText) => {
+	const image = button.previousSibling;
+	console.log(image);
+};

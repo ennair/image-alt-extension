@@ -14,14 +14,15 @@ const initButtons = () => {
 	for (const image of images) {
 		const button = altWriteButton.cloneNode(true);
 		const altText = image.getAttribute('alt');
+		const imageUrl = image.getAttribute('url');
 
 		image.parentNode.classList.add('altwrite--relative');
 		image.after(button);
-		handleModalAction(button, altText);
+		handleModalAction(button, altText, imageUrl);
 	}
 };
 
-const initModal = (button, altText) => {
+const initModal = (button, altText, imageUrl) => {
 	const modalContainer = document.createElement('div');
 	const modalText = document.createElement('h1');
 	const inputForm = document.createElement('form');
@@ -40,19 +41,31 @@ const initModal = (button, altText) => {
 	modalContainer.style.left = `${left + 20}px`;
 	modalContainer.appendChild(inputForm);
 
+	input.classList.add('altwrite__modal-input');
 	input.value = altText;
-	sendButton.innerHTML = 'verstuur';
+
+	sendButton.classList.add('altwrite__modal-send-button');
+	sendButton.innerHTML = 'Verstuur';
 
 	inputForm.appendChild(input);
 	inputForm.appendChild(sendButton);
 
+	inputForm.addEventListener('submit', (event) => {
+		event.preventDefault();
+		alert(`form submitted: ${imageUrl} -> ${input.value}`);
+	});
+
 	document.body.appendChild(modalContainer);
+
+	modalContainer.addEventListener('focusout', (event) => {
+		modalContainer.hidden = true;
+	});
 };
 
-const handleModalAction = (button, altText) => {
+const handleModalAction = (button, altText, imageUrl) => {
 	button.addEventListener('click', (event) => {
 		event.preventDefault();
-		initModal(button, altText);
+		initModal(button, altText, imageUrl);
 
 		editAltText(button, altText);
 	});

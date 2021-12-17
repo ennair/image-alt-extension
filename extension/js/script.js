@@ -83,13 +83,12 @@ const initModal = (button, altText, imageUrl) => {
 
 	inputForm.addEventListener('submit', (event) => {
 		event.preventDefault();
-		alert(`form submitted: ${imageUrl} -> ${input.value}`);
 		editAltText(imageUrl, input.value);
 	});
 
 	document.body.appendChild(modalContainer);
 
-	modalContainer.addEventListener('focusout', (event) => {
+	inputForm.addEventListener('focusout', (event) => {
 		modalContainer.hidden = true;
 	});
 };
@@ -125,20 +124,17 @@ initButtons();
 getImages();
 sortImages();
 
-const editAltText = (button, altText) => {
-	const image = button.previousSibling;
-	console.log(image);
+const editAltText = async (imageUrl, newAltText) => {
+	let targetImg = document.querySelector('img[src="https://media.nu.nl/m/3mfxa4xadouj_xwd640.jpg/om-vervolgt-twee-agenten-voor-geweld-tijdens-coronademonstratie-malieveld.jpg"]');
+	targetImg.setAttribute('alt', newAltText);
+	await postAltText('om-vervolgt-twee-agenten-voor-geweld-tijdens-coronademonstratie-malieveld.jpg', newAltText).then(error => console.log(error));
 };
 
 const reviseAltText = async () => {
-	console.log(' a');
 	if (window.location.href === 'https://www.nu.nl/binnenland/6173682/om-vervolgt-twee-agenten-voor-geweld-tijdens-coronademonstratie-malieveld.html') {
-		console.log(' a');
 		let targetImg = document.querySelector('img[src="https://media.nu.nl/m/3mfxa4xadouj_xwd640.jpg/om-vervolgt-twee-agenten-voor-geweld-tijdens-coronademonstratie-malieveld.jpg"]');
 		newAlt = (await getAltText('om-vervolgt-twee-agenten-voor-geweld-tijdens-coronademonstratie-malieveld.jpg')).imgNewAlt;
-		console.log(newAlt);
 		targetImg.setAttribute('alt', newAlt);
-		console.log(' a');
 	}
 }
 reviseAltText();
